@@ -1,6 +1,9 @@
-version: 0.1
+version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      nodejs: 10
   build:
     commands:
       - echo Nothing to do yet
@@ -11,4 +14,3 @@ artifacts:
     - favicon.ico
     - styles/main.css
     - images/*
-    
