@@ -1,5 +1,5 @@
 import boto3
-import StringIO #file in memory not put on file system 
+import StringIO
 import zipfile
 import mimetypes
 
@@ -10,14 +10,28 @@ def lambda_handler(event, context):
     topic = sns.Topic(
         'arn:aws:sns:ap-southeast-1:524296608096:deployPortfolioTopic')
 
+    location = {
+        "bucketName": 'portfoliobuild.ddotx.com',
+        "objectKey": 'portfoliobuild.zip'
+    }
+
     try:
+        job = event.get("CodePipeline.job")
+
+        if job:
+            for artifact in job["data"]["inputArtifacts"]:
+                if artifact["name"] == "MyAppBuild":
+                    location = artifact["location"]["s3Location"]
+
+        print "Building portfolio from " + str(location)
+
         s3 = boto3.resource('s3')
         portfolio_bucket = s3.Bucket('portfolio.ddotx.com')
 
-        build_bucket = s3.Bucket('portfoliobuild.ddotx.com')
+        build_bucket = s3.Bucket(location["bucketName"])
 
         portfolio_zip = StringIO.StringIO()
-        build_bucket.download_fileobj('portfoliobuild.zip', portfolio_zip)
+        build_bucket.download_fileobj(location["objectKey"], portfolio_zip)
 
         with zipfile.ZipFile(portfolio_zip) as myzip:
             for nm in myzip.namelist():
@@ -29,6 +43,10 @@ def lambda_handler(event, context):
         print "job done"
         topic.publish(Subject="Portfolio Deployed",
                       Message="Portfolio deployed successfully!")
+        if job:
+            codepipeline = boto3.client('codepipeline')
+            codepipeline.put_job_success_result(jobId=job["id"])
+
     except:
         topic.publish(Subject="Portfolio Deploy Failed",
                       Message="The Portfolio was not deployed successfully!")
