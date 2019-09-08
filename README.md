@@ -1,4 +1,4 @@
 # acloud-serverless-portfolio-with-react
-
+[![Build Status](https://codebuild.ap-southeast-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoiMDErLytuUW5wY29aN1UyZ3pLZlZNMk5aQnB0OGhhd2lTY1RuRS9GNzgvSWVQOUl3OFpmeHNVNDNWek9MeWg2Ly9qRXJoUVpNa0E3Ykk0eGhlUmE2b2U4PSIsIml2UGFyYW1ldGVyU3BlYyI6Im1GVmM0TlY0b0kwSW5sb3YiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)]
 ## Tech
 AWS
