@@ -1,5 +1,5 @@
 import boto3
-import StringIO
+import StringIO #file in memory not put on file system 
 import zipfile
 import mimetypes
 
