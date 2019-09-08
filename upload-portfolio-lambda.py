@@ -20,14 +20,14 @@ def lambda_handler(event, context):
 
         if job:
             for artifact in job["data"]["inputArtifacts"]:
-                if artifact["name"] == "MyAppBuild":
+                if artifact["name"] == "BuildApp":
                     location = artifact["location"]["s3Location"]
 
         print "Building portfolio from " + str(location)
 
         s3 = boto3.resource('s3')
-        portfolio_bucket = s3.Bucket('portfolio.ddotx.com')
 
+        portfolio_bucket = s3.Bucket('portfolio.ddotx.com')
         build_bucket = s3.Bucket(location["bucketName"])
 
         portfolio_zip = StringIO.StringIO()
